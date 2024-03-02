@@ -23,3 +23,5 @@ Contributing Guidelines: Contributions are welcome. Refer to CONTRIBUTING.md for
 License: Not sure what license this project comes under. 
 
 Contact Information: For inquiries or assistance, please contact: 2023sl93002@wilp.bits-pilani.ac.in
+2023sl93025@wilp.bits-pilani.ac.in
+
