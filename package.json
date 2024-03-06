@@ -2,7 +2,7 @@
   "name": "harmony-haven",
   "version": "1.0.0",
   "description": "Project Name: Harmony Haven",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
