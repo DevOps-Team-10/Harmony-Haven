@@ -2,6 +2,18 @@
 
 Project Name: Harmony Haven
 
+Installation : Clone the repo, install npm, express and pm2. 
+
+START THE SERVER : enter the local repo and hit pm2 start app.js  
+REFRESH VIEW : just refresh the browser, changes should reflect
+REFRESH SERVER (after changes in the app.js) : pm2 restart app.js
+STOP THE SERVER : pm2 stop app.js
+
+Any errors in local deployment - check if the port (deafult 3000) is occupied or not
+GET PID : lsof -i :3000 (macOS, not sure about windows please look it up)
+KILL : kill <PID>
+THAT SHOULD FIX THE DEPLOYMENT ISSUES
+
 Purpose: Harmony Haven is a website aimed at promoting wellness through herbal remedies and spiritual lifestyle practices. This project serves as an assignment for our Software Engineering MTech 2nd sem DevOps, showcasing our skills in DevOps practices.
 
 Key Features:
