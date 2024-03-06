@@ -6,6 +6,7 @@
     <title>OpenID Connect Registration Page</title>
 </head>
 <body>
+<button onclick="goBack()">Back</button>
     <h2>Register with OpenID Connect</h2>
 
     <form id="openid-register-form">
@@ -24,7 +25,7 @@
             </tr>
         </table>
     </form>
-
+       
     <script>
         function signInWithOpenID() {
             // You need to replace 'YOUR_OPENID_PROVIDER_URL' with the actual OpenID Connect provider URL.
@@ -40,6 +41,10 @@
 
             // Redirect the user to the authorization URL
             window.location.href = authorizationUrl;
+        }
+
+ function goBack() {
+            window.history.back();
         }
     </script>
 </body>
