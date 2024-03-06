@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenID Connect Registration Page</title>
+</head>
+<body>
+    <h2>Register with OpenID Connect</h2>
+
+    <form id="openid-register-form">
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td><input type="text" id="username" name="username" required></td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td><input type="email" id="email" name="email" required></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button type="button" onclick="signInWithOpenID()">Register with OpenID Connect</button></td>
+            </tr>
+        </table>
+    </form>
+
+    <script>
+        function signInWithOpenID() {
+            // You need to replace 'YOUR_OPENID_PROVIDER_URL' with the actual OpenID Connect provider URL.
+            var openidProviderUrl = 'YOUR_OPENID_PROVIDER_URL';
+            var redirectUri = window.location.href; // Redirect back to this page after authentication
+
+            // Construct the authorization URL
+            var authorizationUrl = openidProviderUrl + '/authorize';
+            authorizationUrl += '?client_id=YOUR_CLIENT_ID'; // Replace 'YOUR_CLIENT_ID' with your client ID
+            authorizationUrl += '&redirect_uri=' + encodeURIComponent(redirectUri);
+            authorizationUrl += '&response_type=code';
+            authorizationUrl += '&scope=openid profile email'; // Adjust scope as needed
+
+            // Redirect the user to the authorization URL
+            window.location.href = authorizationUrl;
+        }
+    </script>
+</body>
+</html>
