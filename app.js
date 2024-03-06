@@ -1,15 +1,16 @@
-// Importing the Express module
 const express = require('express');
+const path = require('path');
 
-// Creating an Express application
 const app = express();
 
-// Define a route
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Define the default route to serve the index.html file
 app.get('/', (req, res) => {
-  res.send('Hello, World!');
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
-// Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
