@@ -1,4 +1,6 @@
 # Harmony-Haven
+## server side Programming exposing at port 5000
+## Mongoose ORM, 
 
 Project Name: Harmony Haven
 
@@ -13,6 +15,9 @@ Any errors in local deployment - check if the port (deafult 3000) is occupied or
 GET PID : lsof -i :3000 (macOS, not sure about windows please look it up)
 KILL : kill <PID>
 THAT SHOULD FIX THE DEPLOYMENT ISSUES
+
+## PORT AND DEATILS
+
 
 Purpose: Harmony Haven is a website aimed at promoting wellness through herbal remedies and spiritual lifestyle practices. This project serves as an assignment for our Software Engineering MTech 2nd sem DevOps, showcasing our skills in DevOps practices.
 
