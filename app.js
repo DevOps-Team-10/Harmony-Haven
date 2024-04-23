@@ -1,27 +1,20 @@
+require('dotenv').config()
+
 const express = require('express');
-const path = require('path');
-
+const routesHandler=require('./routes/handler.js');
 const app = express();
+const mongoose = require('mongoose')
 
-app.use(express.static(path.join(__dirname, 'public')));
+mongoose.connect(process.env.DATABASE_URL)
+const db = mongoose.connection
+db.on('error',(error=>console.error(error)))
+db.once('open',()=> console.log('Connected to Database'))
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'index.html'));
-});
+app.use(express.json())
 
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'login.html'));
-});
+app.use('/',routesHandler);
 
-app.get('/about', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'about.html'));
-});
-
-app.get('/registration', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'registration.html'));
-});
-
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;  // backend routing port  
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
