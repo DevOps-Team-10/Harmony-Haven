@@ -1,20 +1,29 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const express = require('express');
-const routesHandler=require('./routes/handler.js');
+const mongoose = require('mongoose');
+
+const connectToDB = require('./config/db');
+const logger = require('./middleware/logger');
+const routesHandler = require('./routes/handler');
+
+
 const app = express();
-const mongoose = require('mongoose')
 
-mongoose.connect(process.env.DATABASE_URL)
-const db = mongoose.connection
-db.on('error',(error=>console.error(error)))
-db.once('open',()=> console.log('Connected to Database'))
+// Connect to Database
+console.log('setting up Database...');
+connectToDB();
 
-app.use(express.json())
+console.log('Setting up Middleware...');
+// Middleware
+app.use(express.json());
+app.use(logger); // Custom logger middleware
 
-app.use('/',routesHandler);
+console.log('Setting up Routes...');
+// Routes
+app.use('/', routesHandler);
 
-const PORT = process.env.PORT || 5000;  // backend routing port  
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
