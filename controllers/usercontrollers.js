@@ -4,7 +4,9 @@ const bodyParser = require('body-parser');
 
 const apiResponse = require('../utils/apiResponse')
 const User = require('../models/userModel')
-const {createToken} = require('../middleware/token.js')
+const {createToken} = require('../middleware/token.js');
+const { Product } = require('../models/productModel.js');
+const APIReponse = require('../utils/apiResponse');
 
 
 const users = [];
@@ -67,9 +69,6 @@ const createUser= async (req, res) => {
   };
 
 
-  const createProduct =async(req,res,)=>{
-
-  }
 
   module.exports= {
     createUser,
