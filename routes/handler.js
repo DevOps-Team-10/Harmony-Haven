@@ -11,7 +11,7 @@ console.log('Initializing Routes...');
 
 
 router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'views', 'about.html'));
+  res.json({"Success" :  "Backend hit successfully :)"});
 });
 
 
