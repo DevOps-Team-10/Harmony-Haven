@@ -1,13 +1,12 @@
 const jwt = require('jsonwebtoken');
+const APIReponse = require('../utils/apiResponse');
 
 
 const createToken = (userName,userEmail)=>{
     return jwt.sign({ name:userName , email:userEmail }, process.env.SECRET_KEY, { expiresIn: '1h' });
 }
 
-const validateToken=()=>{
 
-}
 
 function authenticateToken(req, res, next) {
     try {
@@ -15,14 +14,15 @@ function authenticateToken(req, res, next) {
       const token = authHeader && authHeader.split(' ')[1];
   
       if (!token) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json(new APIReponse(401,"Authorization token is not passed"));
       }
   
       jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
         if (err) {
           return res.status(403).json({ message: 'Invalid token' });
         }
-        req.user = user;
+        // providing the data used to encode the message , so can use it later
+        req.sellerInfo = user;
         next();
       });
     } catch (error) {

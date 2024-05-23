@@ -26,10 +26,10 @@ const createUser= async (req, res) => {
 
     try{
           const savedUser= await newUser.save();
-          res.status(201).json(savedUser);
+          res.status(201).json(new apiResponse(201,"User Registered Successfully",{userName,userEmail}));
     } catch (error) {
         if(error.code === 11000){
-            res.status(400).json({message:'Email Already Exist'})
+            res.status(409).json({message:'Email Already Exist'})
         }else{
       res.status(400).json({ message: 'Error registering user' });
         }
@@ -44,7 +44,7 @@ const createUser= async (req, res) => {
 
 
         if(!user){
-            return res.status(401).json({message:'Invalid Credentials'});
+            return res.status(401).json(new apiResponse(401,'Invalid Credentials'));
         }
 
        const validPassword = await bcrypt.compare(userPassword,user.password)
@@ -62,7 +62,7 @@ const createUser= async (req, res) => {
         }
 
     }catch(error){
-        res.status(500).json({message:'Error Logging in'});
+        res.status(500).json(new apiResponse(500,'Error Logging In'));
     }
   };
 
