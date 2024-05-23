@@ -59,7 +59,18 @@ const getProducts = async (req,res)=>{
         }
 };
 
+const fetchProductDetail = async  (req,res)=>{
+    try{
+        const product = await Product.findById(req.params.id);
+        return res.status(200).json(new APIReponse(200,"Product Detail Fetched",product));
+  
+      }catch(error){
+          return res.status(500).json(new APIReponse(500,`Error Fetching Data ${error}`));
+      }
+};
+
 module.exports={
     createProduct,
-    getProducts
+    getProducts,
+    fetchProduct:fetchProductDetail
 }

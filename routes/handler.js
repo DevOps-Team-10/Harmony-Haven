@@ -25,6 +25,9 @@ router.post('/user/createProduct',middleware.authenticateToken,productController
 
 //show all the products
 router.get('/user/product',middleware.authenticateToken,productController.getProducts)
+
+// get the specific product details
+router.get('/user/product/:id',middleware.authenticateToken,productController.fetchProduct)
          
 
 module.exports = router;
