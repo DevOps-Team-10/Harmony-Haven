@@ -26,7 +26,7 @@ const createUser= async (req, res) => {
 
     try{
           const savedUser= await newUser.save();
-          res.status(201).json(new apiResponse(201,"User Registered Successfully",{userName,userEmail}));
+          res.status(201).json(new apiResponse(201,"User Registered Successfully",{userName,userEmail,isSeller}));
     } catch (error) {
         if(error.code === 11000){
             res.status(409).json({message:'Email Already Exist'})
@@ -56,7 +56,7 @@ const createUser= async (req, res) => {
         else
         {
             const token= createToken(user.name,user.email);
-            const successResponse = new apiResponse(200,`${userEmail} Logged In Successfully`,{accessToken:token})
+            const successResponse = new apiResponse(200,`${userEmail} Logged In Successfully`,{name:user.name,email:user.email,isSeller:user.isSeller,address:user.address,accessToken:token})
             return res.status(200).json(successResponse);
 
         }
