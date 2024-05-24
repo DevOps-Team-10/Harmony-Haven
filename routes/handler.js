@@ -28,6 +28,12 @@ router.get('/user/product',middleware.authenticateToken,productController.getPro
 
 // get the specific product details
 router.get('/user/product/:id',middleware.authenticateToken,productController.fetchProduct)
-         
+
+// delete the product, But will Confirm that the owner before deleting
+router.delete('/user/product/:id',middleware.authenticateToken,productController.deleteProduct)
+ 
+// Update The Product Details
+router.put('/user/product/update/:id',middleware.authenticateToken,productController.updateProduct);
+
 
 module.exports = router;
