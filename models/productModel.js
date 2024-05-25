@@ -26,6 +26,11 @@ const createProductSchema = new mongoose.Schema({
     imgUrl :{
         type:String,
         required:false
+    },
+    averageRating: {
+        type: Number,
+        required: true,
+        default: 0
     }
 });
 

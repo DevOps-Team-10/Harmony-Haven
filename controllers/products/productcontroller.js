@@ -7,7 +7,7 @@ const APIReponse = require('../../utils/apiResponse')
 const createProduct = async(req,res ) => {
 
     try{
-    const user = await User.findOne({email:req.sellerInfo.email});
+    const user = await User.findOne({email:req.userInfo.email});
     if(!user.isSeller){
         return res.status(403).json(new APIReponse(403,'You are not authorized to Create Product, Please Register As Seller '));
         }
@@ -39,7 +39,7 @@ const createProduct = async(req,res ) => {
 
         // Product Has been created Now, Store the sellerid , productid in the Table  Product Sale 
         const productId=savedProduct._id;
-        const sellerEmail = req.sellerInfo.email;
+        const sellerEmail = req.userInfo.email;
         const seller= await User.findOne({email:sellerEmail});
 
         const newProductSale= new ProductSale({
@@ -86,7 +86,7 @@ const deleteProduct= async (req,res)=>{
     try{
         // Know the seller 
         const product = await Product.findById(req.params.id);
-        const user= await User.findOne({email:req.sellerInfo.email})
+        const user= await User.findOne({email:req.userInfo.email})
         if(!product){
             return res.status(304).json(new APIReponse(304,'Product Not Found'));
         }
@@ -124,8 +124,8 @@ const updateProduct = async (req, res) => {
             return res.status(404).json(new APIReponse(404,'Product Not Found'));
         }
 
-        // Find the user by email from the request (assuming req.sellerInfo contains authenticated user info)
-        const user = await User.findOne({ email: req.sellerInfo.email });
+        // Find the user by email from the request (assuming req.userInfo contains authenticated user info)
+        const user = await User.findOne({ email: req.userInfo.email });
         if (!user) {
             return res.status(403).json(new APIReponse(403,'Unauthorized'));
         }

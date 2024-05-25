@@ -22,7 +22,7 @@ function authenticateToken(req, res, next) {
           return res.status(403).json({ message: 'Invalid token' });
         }
         // providing the data used to encode the message , so can use it later
-        req.sellerInfo = user;
+        req.userInfo = user;
         next();
       });
     } catch (error) {

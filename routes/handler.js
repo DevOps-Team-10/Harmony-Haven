@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/usercontrollers');
 const productController = require('../controllers/products/productcontroller');
+const orderController = require('../controllers/products/ordercontroller');
+const reviewController = require('../controllers/products/reviewController');
 
 const path = require('path');
 const bodyParser = require('body-parser')
@@ -34,6 +36,12 @@ router.delete('/user/product/:id',middleware.authenticateToken,productController
  
 // Update The Product Details
 router.put('/user/product/update/:id',middleware.authenticateToken,productController.updateProduct);
+
+//order the product
+router.post('/user/order/product/:id',middleware.authenticateToken,orderController.orderItems);
+
+//Rating the Product
+router.post('/user/rating/product/:id',middleware.authenticateToken,reviewController.reviewProduct)
 
 
 module.exports = router;
