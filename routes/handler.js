@@ -3,6 +3,9 @@ const router = express.Router();
 const userController = require('../controllers/usercontrollers');
 const productController = require('../controllers/products/productcontroller');
 
+// Import the getConsultants function
+const { getConsultants } = require('../controllers/getConsultants');
+
 const path = require('path');
 const bodyParser = require('body-parser')
 const middleware = require('../middleware/token')
@@ -14,20 +17,22 @@ router.get('/', (req, res) => {
   res.json({"Success" :  "200"});
 });
 
-//Register user
-router.post('/user/register',userController.createUser);
+// Register user
+router.post('/user/register', userController.createUser);
 
-//user login
-router.post('/user/login',userController.loginUser);
+// User login
+router.post('/user/login', userController.loginUser);
 
-//Create Product
-router.post('/user/createProduct',middleware.authenticateToken,productController.createProduct)
+// Create Product
+router.post('/user/createProduct', middleware.authenticateToken, productController.createProduct);
 
-//show all the products
-router.get('/user/product',middleware.authenticateToken,productController.getProducts)
+// Show all the products
+router.get('/user/product', middleware.authenticateToken, productController.getProducts);
 
-// get the specific product details
-router.get('/user/product/:id',middleware.authenticateToken,productController.fetchProduct)
-         
+// Get the specific product details
+router.get('/user/product/:id', middleware.authenticateToken, productController.fetchProduct);
+
+// Route for consultants
+router.get('/user/consultants', getConsultants);
 
 module.exports = router;
