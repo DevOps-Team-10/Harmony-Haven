@@ -11,7 +11,7 @@ console.log('Initializing Routes...');
 
 
 router.get('/', (req, res) => {
-  res.json({"Success" :  "Backend hit successfully 1"});
+  res.json({"Success" :  "200"});
 });
 
 //Register user
