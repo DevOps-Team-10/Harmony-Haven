@@ -2,6 +2,10 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+
+const multer = require('multer'); 
+
 
 const connectToDB = require('./config/db');
 const logger = require('./middleware/logger');
@@ -16,6 +20,9 @@ const app = express();
 // Connect to Database
 console.log('setting up Database...');
 connectToDB();
+
+//allow cross origin
+app.use(cors());
 
 console.log('Setting up Middleware...');
 // Middleware
