@@ -5,6 +5,9 @@ const productController = require('../controllers/products/productcontroller');
 const orderController = require('../controllers/products/ordercontroller');
 const reviewController = require('../controllers/products/reviewController');
 
+// Import the getConsultants function
+const { getConsultants } = require('../controllers/getConsultants');
+
 const path = require('path');
 const bodyParser = require('body-parser')
 const middleware = require('../middleware/token')
@@ -20,20 +23,23 @@ const upload = multer({ storage: storage });
 
 
 router.get('/', (req, res) => {
-  res.json({"Success" :  "Backend hit successfully 1"});
+  res.json({"Success" :  "200"});
 });
 
-//Register user
-router.post('/user/register',userController.createUser);
+// Register user
+router.post('/user/register', userController.createUser);
 
-//user login
-router.post('/user/login',userController.loginUser);
+// User login
+router.post('/user/login', userController.loginUser);
 
 //Create Product
 router.post('/user/createProduct', middleware.authenticateToken, upload.single('image'), productController.createProduct);
 
-//show all the products
-router.get('/user/product',middleware.authenticateToken,productController.getProducts)
+// Show all the products
+router.get('/user/product', middleware.authenticateToken, productController.getProducts);
+
+// Get the specific product details
+router.get('/user/product/:id', middleware.authenticateToken, productController.fetchProduct);
 
 // get the specific product details
 router.get('/user/product/:id',middleware.authenticateToken,productController.fetchProduct)
@@ -49,6 +55,9 @@ router.post('/user/order/product/:id',middleware.authenticateToken,orderControll
 
 //Rating the Product
 router.post('/user/rating/product/:id',middleware.authenticateToken,reviewController.reviewProduct)
+
+// Route for consultants
+router.get('/user/consultants', getConsultants);
 
 
 module.exports = router;
