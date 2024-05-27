@@ -66,6 +66,7 @@ const getProducts = async (req, res) => {
             const base64Image = Buffer.from(product.image.data).toString('base64');
             const imageUrl = `data:${product.image.contentType};base64,${base64Image}`;
             return {
+                _id:product._id,
                 name: product.name,
                 description: product.description,
                 productType: product.productType,

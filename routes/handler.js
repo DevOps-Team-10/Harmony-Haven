@@ -51,7 +51,7 @@ router.delete('/user/product/:id',middleware.authenticateToken,productController
 router.put('/user/product/update/:id',middleware.authenticateToken,productController.updateProduct);
 
 //order the product
-router.post('/user/order/product/:id',middleware.authenticateToken,orderController.orderItems);
+router.post('/user/order/products',middleware.authenticateToken,orderController.orderItems);
 
 //Rating the Product
 router.post('/user/rating/product/:id',middleware.authenticateToken,reviewController.reviewProduct)
