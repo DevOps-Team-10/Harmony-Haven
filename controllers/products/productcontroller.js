@@ -4,70 +4,86 @@ const {Product,ProductSale} = require('../../models/productModel')
 const User = require('../../models/userModel')
 const APIReponse = require('../../utils/apiResponse')
 
-const createProduct = async(req,res ) => {
-
-    try{
-    const user = await User.findOne({email:req.userInfo.email});
-    if(!user.isSeller){
-        return res.status(403).json(new APIReponse(403,'You are not authorized to Create Product, Please Register As Seller '));
+const createProduct = async (req, res) => {
+    try {
+        // Check if user is a seller
+        const user = await User.findOne({ email: req.userInfo.email });
+        if (!user || !user.isSeller) {
+            return res.status(403).json(new APIReponse(403, 'You are not authorized to create a product. Please register as a seller.'));
         }
-      }catch(error){
-             return res.status(500).json(new APIReponse(500,'Server Error'));
-          }
 
-    const productDetails = req.body
+        // Extract product details from request body
+        const { name, description, productType, price, quantity } = req.body;
 
-    const name = productDetails.name
-    const productDescription = productDetails.description
-    const productType=productDetails.productType
-    const ProductPrice = productDetails.price
-    const productQuantity=productDetails.quantity
-    const imgUrl= productDetails.imgUrl
+        // Check if image was uploaded
+        if (!req.file) {
+            return res.status(400).json(new APIReponse(400, 'No image uploaded.'));
+        }
 
+        // Extract image details from multer file upload
+        const image = {
+            data: req.file.buffer, // File data buffer
+            contentType: req.file.mimetype // File content type
+        };
 
-    const newProduct = new Product({
-            name:name,
-            description:productDescription,
-            productType:productType,
-            price:ProductPrice,
-            quantity:productQuantity,
-            imgUrl:imgUrl
-    });
+        // Create new product instance
+        const newProduct = new Product({
+            name,
+            description,
+            productType,
+            price,
+            quantity,
+            image
+        });
 
-    try{
+        // Save the product to the database
         const savedProduct = await newProduct.save();
 
-        // Product Has been created Now, Store the sellerid , productid in the Table  Product Sale 
-        const productId=savedProduct._id;
-        const sellerEmail = req.userInfo.email;
-        const seller= await User.findOne({email:sellerEmail});
-
-        const newProductSale= new ProductSale({
-            sellerId:seller.id,
-            productId:productId
-        })
-
+        // Store sellerId and productId in ProductSale table
+        const newProductSale = new ProductSale({
+            sellerId: user.id,
+            productId: savedProduct._id
+        });
         const savedProductSale = await newProductSale.save();
 
-        return res.status(200).json(new APIReponse(200,"Product Created Successfully",savedProduct) );
-
-    }catch(error){
-        return res.status(500).json(new APIReponse(500,`Error:${error} on Creating Product`));
+        // Respond with success message and saved product data
+        return res.status(200).json(new APIReponse(200, 'Product created successfully', savedProduct));
+    } catch (error) {
+        // Handle errors
+        console.error('Error creating product:', error);
+        return res.status(500).json(new APIReponse(500, `Error creating product: ${error.message}`));
     }
-    
-
-  // return res.status(200).json({message:'product created successfully'})
-}
-
-const getProducts = async (req,res)=>{
-        try{
-            const products = await Product.find();
-            return res.status(200).json(new APIReponse(200,"Products Fetched Successfully",products));
-
-        }catch(error){
-            return res.status(500).json(new APIReponse(500,`Error:${error} on Fetching Product`));
-        }
 };
+
+
+const getProducts = async (req, res) => {
+    try {
+        // Fetch products from the database
+        const products = await Product.find();
+
+        // Convert image buffer data to Base64-encoded image URLs
+        const productsWithBase64Images = products.map(product => {
+            const base64Image = Buffer.from(product.image.data).toString('base64');
+            const imageUrl = `data:${product.image.contentType};base64,${base64Image}`;
+            return {
+                name: product.name,
+                description: product.description,
+                productType: product.productType,
+                price: product.price,
+                quantity: product.quantity,
+                image: imageUrl
+            };
+        });
+
+        // Send the response with products including Base64-encoded image URLs
+        return res.status(200).json(new APIReponse(200, "Products Fetched Successfully", productsWithBase64Images));
+    } catch (error) {
+        // Handle errors
+        console.error('Error fetching products:', error);
+        return res.status(500).json(new APIReponse(500, `Error fetching products: ${error.message}`));
+    }
+};
+
 
 const fetchProductDetail = async  (req,res)=>{
     try{

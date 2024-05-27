@@ -1,31 +1,30 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-//Define the Schema
+// Define the Schema
 const createProductSchema = new mongoose.Schema({
-
-    name:{
-        type:String,
-        required:true
+    name: {
+        type: String,
+        required: true
     },
-    description:{
-        type:String,
-        required:true,
+    description: {
+        type: String,
+        required: true,
     },
-    productType:{
-        type:String,
-        required:true
+    productType: {
+        type: String,
+        required: true
     },
-    price:{
-        type:Number,
-        required:true,
+    price: {
+        type: Number,
+        required: true,
     },
-    quantity:{
-        type:Number,
-        required:true
+    quantity: {
+        type: Number,
+        required: true
     },
-    imgUrl :{
-        type:String,
-        required:false
+    image: {
+        data: Buffer, // Store the binary data of the image
+        contentType: String // Store the content type of the image (e.g., 'image/jpeg')
     },
     averageRating: {
         type: Number,
@@ -35,21 +34,21 @@ const createProductSchema = new mongoose.Schema({
 });
 
 const productSaleSchema = new mongoose.Schema({
-    sellerId:{
-        type:String,
-        required:true
+    sellerId: {
+        type: String,
+        required: true
     },
-    productId:{
-        type:String,
-        required:true
+    productId: {
+        type: String,
+        required: true
     }
 });
 
-//Create the Model
+// Create the Model
+const Product = mongoose.model('Product', createProductSchema);
+const ProductSale = mongoose.model('ProductSale', productSaleSchema);
 
-const Product= mongoose.model('Product',createProductSchema);
-const ProductSale= mongoose.model('ProductSale',productSaleSchema);
 module.exports = {
     Product,
     ProductSale
-}
+};

@@ -12,7 +12,14 @@ const path = require('path');
 const bodyParser = require('body-parser')
 const middleware = require('../middleware/token')
 
+const multer = require('multer'); 
+
 console.log('Initializing Routes...');
+
+
+// Multer configuration
+const storage = multer.memoryStorage(); // Store file in memory
+const upload = multer({ storage: storage });
 
 
 router.get('/', (req, res) => {
@@ -25,8 +32,8 @@ router.post('/user/register', userController.createUser);
 // User login
 router.post('/user/login', userController.loginUser);
 
-// Create Product
-router.post('/user/createProduct', middleware.authenticateToken, productController.createProduct);
+//Create Product
+router.post('/user/createProduct', middleware.authenticateToken, upload.single('image'), productController.createProduct);
 
 // Show all the products
 router.get('/user/product', middleware.authenticateToken, productController.getProducts);
