@@ -8,7 +8,7 @@ describe('Dummy Test', () => {
 
  it('Another dumm test to check pass if the file is being read', () => {
     // This test will always pass
-    assert.strictEqual(1 + 1, 3);
+    assert.strictEqual(1 + 1, 2);
   });
 
 });
