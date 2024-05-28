@@ -2,20 +2,25 @@ require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
 
-const multer = require('multer'); 
+const {Message} = require('./models/communityModel')
+const cors = require('cors');
+const http = require('http'); 
+
 
 
 const connectToDB = require('./config/db');
 const logger = require('./middleware/logger');
 const routesHandler = require('./routes/handler');
 
-const swaggerUi = require('swagger-ui-express');
-const swaggerJsdoc = require('swagger-jsdoc');
+
 
 
 const app = express();
+const socketIo = require('socket.io');
+const server = http.createServer(app); 
+const io = socketIo(server);
+
 
 // Connect to Database
 console.log('setting up Database...');
@@ -36,30 +41,28 @@ app.use('/', routesHandler);
 const PORT = process.env.PORT || 5005;
 
 
-// Swagger options
-const options = {
-  swaggerDefinition: {
-    info: {
-      title: 'Your API Documentation',
-      version: '1.0.0',
-      description: 'Documentation for your RESTful API',
-    },
-    servers: [
-      {
-        url: `http://localhost:${PORT}`,
-        description: 'Local server',
-      },
-    ],
-  },
-  // Paths to files containing OpenAPI definitions
-  apis: ['./routes/*.js'], // Path to the API docs
-};
+// Socket.io connection
+io.on('connection', (socket) => {
+  console.log('New client connected');
 
-// Initialize swagger-jsdoc
-const specs = swaggerJsdoc(options);
+  socket.on('sendMessage', async (message) => {
+    try {
+      const newMessage = new Message({
+        communityId: message.communityId,
+        userId: message.userId,
+        userContent: message.userContent,
+      });
+      await newMessage.save();
+      io.emit('message', newMessage);
+    } catch (error) {
+      console.error('Error saving message:', error);
+    }
+  });
 
-// Serve Swagger UI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

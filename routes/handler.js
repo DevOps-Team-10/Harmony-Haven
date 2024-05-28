@@ -4,6 +4,8 @@ const userController = require('../controllers/usercontrollers');
 const productController = require('../controllers/products/productcontroller');
 const orderController = require('../controllers/products/ordercontroller');
 const reviewController = require('../controllers/products/reviewController');
+const communityController = require ('../controllers/communityController');
+const messageController = require('../controllers/messageController')
 
 // Import the getConsultants function
 const { getConsultants } = require('../controllers/getConsultants');
@@ -58,6 +60,16 @@ router.post('/user/rating/product/:id',middleware.authenticateToken,reviewContro
 
 // Route for consultants
 router.get('/user/consultants', getConsultants);
+
+// Create Community
+router.post('/api/community',middleware.authenticateToken,communityController.createCommunity)
+
+//Show the Community
+router.get('/api/community',middleware.authenticateToken,communityController.getCommunity)
+
+router.get('/api/community/:id/messages', middleware.authenticateToken,messageController.fetchMessage)
+
+router.post('/api/community/:id/messages', middleware.authenticateToken, messageController.postMessage);
 
 
 module.exports = router;

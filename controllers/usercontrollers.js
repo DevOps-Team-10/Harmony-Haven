@@ -58,7 +58,7 @@ const createUser= async (req, res) => {
         else
         {
             const token= createToken(user.name,user.email);
-            const successResponse = new apiResponse(200,`${userEmail} Logged In Successfully`,{name:user.name,email:user.email,isSeller:user.isSeller,address:user.address,accessToken:token})
+            const successResponse = new apiResponse(200,`${userEmail} Logged In Successfully`,{id:user._id,name:user.name,email:user.email,isSeller:user.isSeller,address:user.address,accessToken:token})
             return res.status(200).json(successResponse);
 
         }
