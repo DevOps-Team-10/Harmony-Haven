@@ -58,6 +58,10 @@ router.put('/user/product/update/:id',middleware.authenticateToken,productContro
 //order the product
 router.post('/user/order/products',middleware.authenticateToken,orderController.orderItems);
 
+//get order details
+router.get('/user/order/products', middleware.authenticateToken, orderController.getUserOrders);
+
+
 //Rating the Product
 router.post('/user/rating/product/:id',middleware.authenticateToken,reviewController.reviewProduct)
 
