@@ -32,7 +32,7 @@
 
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptJs')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -86,7 +86,7 @@ userSchema.methods.generateAccessToken = function() {
             email: this.email,
             name: this.name,
         },
-        process.env.SECRETKEY || 'gnrceaglfrdmhragonjuxlsihaojgu',
+        process.env.SECRET_KEY || 'gnrceaglfrdmhragonjuxlsihaojgu',
         {
             expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '1d'
         }
