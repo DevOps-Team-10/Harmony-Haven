@@ -1,5 +1,5 @@
 require('dotenv').config();
-
+const cookieParser = require('cookie-parser')
 const express = require('express');
 const mongoose = require('mongoose');
 
@@ -28,6 +28,7 @@ connectToDB();
 
 //allow cross origin
 app.use(cors());
+app.use(cookieParser())
 
 console.log('Setting up Middleware...');
 // Middleware

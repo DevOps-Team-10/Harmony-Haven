@@ -6,6 +6,7 @@ const orderController = require('../controllers/products/ordercontroller');
 const reviewController = require('../controllers/products/reviewController');
 const communityController = require ('../controllers/communityController');
 const messageController = require('../controllers/messageController')
+//const blogController = require('../controllers/blogController')
 
 // Import the getConsultants function
 const { getConsultants } = require('../controllers/getConsultants');
@@ -33,6 +34,8 @@ router.post('/user/register', userController.createUser);
 
 // User login
 router.post('/user/login', userController.loginUser);
+
+router.post('/user/logout', middleware.authenticateToken, userController.logoutUser)
 
 //Create Product
 router.post('/user/createProduct', middleware.authenticateToken, upload.single('image'), productController.createProduct);
@@ -70,6 +73,7 @@ router.get('/api/community',middleware.authenticateToken,communityController.get
 router.get('/api/community/:id/messages', middleware.authenticateToken,messageController.fetchMessage)
 
 router.post('/api/community/:id/messages', middleware.authenticateToken, messageController.postMessage);
+
 
 
 module.exports = router;

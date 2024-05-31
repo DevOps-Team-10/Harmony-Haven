@@ -62,13 +62,13 @@ const generateAccessAndRefreshToken = async(userId) => {
 
 const createUser = async (req, res) => {
   const { name, password, email } = req.body;
+  
 
   if (
     [password, name, email].some(
       (field) => field?.trim() === undefined
     )
   ) {
-    const jsonData = new apiResponse(400,{}, "All fields required");
     return res
       .status(400)
       .json(400, { message: "All fields required" })
@@ -190,9 +190,30 @@ const loginUser = (async (req, res, next) => {
  }
 });
 
+const logoutUser = async(req, res) => {
+  await User.findByIdAndUpdate(
+      req?.user?._id,
+      {
+          $unset: {
+              refreshToken: 1 // this removes the field from document
+          }
+      },
+      {
+          new: true
+      }
+  )
+
+  const options = cookieOption()
+
+  return res
+  .status(200)
+  .clearCookie("accessToken", options)
+  .json(new apiResponse(200, {message: "Logged out successfully"}))
+}
 
 
 module.exports = {
   createUser,
-  loginUser
+  loginUser,
+  logoutUser
 };
