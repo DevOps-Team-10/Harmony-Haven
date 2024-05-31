@@ -84,5 +84,6 @@ router.get('/blogs/:id', middleware.authenticateToken, blogController.getBlogByI
 router.post('/blogs', middleware.authenticateToken, blogController.createBlog)
 router.delete('/blogs/:id', middleware.authenticateToken, blogController.deleteBlog)
 router.patch('/blogs/:id', middleware.authenticateToken, blogController.updateBlog)
+router.get('/blog', middleware.authenticateToken, blogController.getMyBlogs)
 
 module.exports = router;

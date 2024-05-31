@@ -1,5 +1,6 @@
 const apiResponse = require('../utils/apiResponse')
 const Blog = require('../models/blogModel');
+const mongoose = import('mongoose')
 
 const getAllBlogs = async (req, res) => {
     try {
@@ -69,12 +70,24 @@ const updateBlog = async (req, res) => {
     }
 }
 
+const getMyBlogs = async(req, res) => {
+    try {
+
+        const {userInfo} = req
+        const blogs = await Blog.find({owner: userInfo._id})
+        return res.status(200).json(200, {message: "User blogs recieved", blogs})
+    }catch(error) {
+        res.status(500).json(new apiResponse(500, {message: error.message}))
+    }
+}
+
 module.exports = {
     createBlog,
     getAllBlogs,
     getBlogById,
     deleteBlog,
-    updateBlog
+    updateBlog,
+    getMyBlogs
 }
 
 
