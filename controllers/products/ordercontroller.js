@@ -16,7 +16,7 @@ const orderItems = async (req, res) => {
         const newOrder = new Order({
             orderStatus: orderStatus || 'Pending',
             paymentDone: paymentDone || false,
-            address: user.address,
+            address: user.address || "Banglore",
             userId: userId,
         });
         const savedOrder = await newOrder.save();
@@ -63,6 +63,70 @@ const orderItems = async (req, res) => {
     }
 };
 
-module.exports = {
-    orderItems
+const getUserOrders = async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.userInfo.email });
+        if (!user) {
+            return res.status(404).json(new APIResponse(404, 'User not found'));
+        }
+
+        const userId = user._id;
+
+        // Find orders by userId
+        const orders = await Order.find({ userId });
+
+        // If no orders found
+        if (!orders.length) {
+            return res.status(404).json(new APIResponse(404, 'No orders found for this user'));
+        }
+
+        // Create an array of order IDs
+        const orderIds = orders.map(order => order._id);
+
+        // Find order details by order IDs
+        const orderDetails = await OrderDetails.find({ orderId: { $in: orderIds } });
+
+        // Fetch product names for each order detail item
+        const productDetailsPromises = orderDetails.map(async detail => {
+            const product = await Product.findById(detail.productId);
+            return {
+                ...detail.toObject(),
+                productName: product ? product.name : 'Unknown'
+            };
+        });
+
+        const detailedOrderDetails = await Promise.all(productDetailsPromises);
+
+        // Group order details by orderId
+        const groupedOrderDetails = detailedOrderDetails.reduce((acc, detail) => {
+            if (!acc[detail.orderId]) {
+                acc[detail.orderId] = [];
+            }
+            acc[detail.orderId].push(detail);
+            return acc;
+        }, {});
+
+        // Build the response structure
+        const response = orders.map(order => ({
+            orderId: order._id,
+            orderStatus: order.orderStatus,
+            paymentDone: order.paymentDone,
+            address: order.address,
+            items: groupedOrderDetails[order._id] || []
+        }));
+
+        res.status(200).json(new APIResponse(200, 'Orders retrieved successfully', response));
+    } catch (error) {
+        console.error('Error fetching user orders:', error);
+        res.status(500).json(new APIResponse(500, 'Internal Server Error', { error: error.message }));
+    }
 };
+
+module.exports = {
+    orderItems,
+    getUserOrders
+};
+
+
+
+

@@ -40,12 +40,6 @@ io.on('connection', (socket) => {
 
   socket.on('sendMessage', async (message) => {
     try {
-      // const newMessage = new Message({
-      //   communityId: message.communityId,
-      //   userId: message.userId,
-      //   userContent: message.userContent,
-      // });
-      //await newMessage.save();
       io.emit('message', message);
     } catch (error) {
       console.error('Error saving message:', error);
