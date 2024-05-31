@@ -26,7 +26,7 @@ const upload = multer({ storage: storage });
 
 
 router.get('/', (req, res) => {
-  res.json({"Success" :  "endpoint hit"});
+  res.json({"Success" :  "endpoint hit 1 "});
 });
 
 // Register user
