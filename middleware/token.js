@@ -10,8 +10,7 @@ const createToken = (userName,userEmail)=>{
 
 function authenticateToken(req, res, next) {
     try {
-      const authHeader = req.headers['authorization'];
-      const token = authHeader && authHeader.split(' ')[1];
+      const token = req.cookies?.accessToken || req.headers['authorization']?.replace("Bearer ", "")
   
       if (!token) {
         return res.status(401).json(new APIReponse(401,"Authorization token is not passed"));
@@ -23,6 +22,7 @@ function authenticateToken(req, res, next) {
         }
         // providing the data used to encode the message , so can use it later
         req.userInfo = user;
+        
         next();
       });
     } catch (error) {
