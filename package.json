@@ -5,12 +5,26 @@
   "main": "app.js",
   "scripts": {
     "server": "nodemon app.js",
-    "test": "mocha"
+    "test": "nyc mocha"
+  },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "report-dir": "./coverage",
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "test/**/*.js"
+    ]
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -27,6 +41,7 @@
     "chai": "^5.1.1",
     "mocha": "^10.4.0",
     "nodemon": "^3.1.2",
+    "nyc": "^15.1.0",
     "supertest": "^7.0.0"
   }
 }
