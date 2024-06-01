@@ -42,11 +42,8 @@ const createBlog = async (req, res) => {
 
 const deleteBlog = async (req, res) => {
     try {
-        const {userInfo} = req
         const blog = await Blog.findById(req.params.id)
         if(!blog) return res.status(400).json(new apiResponse(400, "Blog not found"))
-        const owner_final = JSON.parse(JSON.stringify(blog?.owner));
-        if(owner_final !== userInfo?._id) return res.status(404).json(new apiResponse(404, "Invalid request"))
 
         await Blog.findByIdAndDelete(req.params.id)
         return res.status(200).json(new apiResponse(200, "Blog successfully deleted"))
@@ -80,6 +77,7 @@ const getMyBlogs = async(req, res) => {
         res.status(500).json(new apiResponse(500, {message: error.message}))
     }
 }
+
 
 module.exports = {
     createBlog,
